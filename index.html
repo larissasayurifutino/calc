@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sua bebidinha, em escala</title>
+    <style>
+        .barra{
+            width: 600px;
+            height: 24px;
+            background: lightgray;
+            margin: 24px 0;
+        }
+        .preenchimento{
+            width: 0;
+            height: 100%;
+            background: green;
+            transition: all 1s; /*animar a transição*/
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Sua bebidinha, em escala</h1>
+
+    <p>Quantas vezes por mês (de 0 a 30), mais ou menos, você costuma tomar uma bebidinha?</p>
+
+    <form>
+        <input type="number" class = 'numvezes' name="num" min="0" max="30">
+    </form>
+
+
+    <p>Nessas ocasiões, o que você costuma beber?</p>
+
+    <form>
+        <input type="radio" class = 'bebida' id="c" name="bebida" value="cerveja">
+        <label for="cerveja">Cerveja</label><br>
+        <input type="radio" class = 'bebida' id="v" name="bebida" value="vinho">
+        <label for="vinho">Vinho</label><br>
+        <input type="radio" class = 'bebida' id="d" name="bebida" value="destilado">
+        <label for="destilado">Destilado</label>
+    </form>
+
+
+
+    <p>
+        O quanto você costuma beber nesses momentos? (em número de latas, taças ou doses)
+    </p>
+
+    <form>
+        <input type="number" class = 'quantidade' name="num" min="0" max="50">
+    </form>
+
+
+    <p>Qual o seu gênero?</p>
+
+    <form>
+      <input type="radio" class = 'genero' id="f" value="f">
+      <label for="f">F</label><br>
+      <input type="radio" class = 'genero' id="m" value="m">
+      <label for="m">M</label><br>
+    </form>
+
+
+    <div class="barra">
+        <div class="preenchimento"></div>
+    </div>
+
+    <p>
+        Segundo o que você disse,
+        você bebe mais que
+        <output>…%</output>
+        das mulheres do mundo.
+    </p>
+    
+    <footer>
+        Fonte: 
+        <a href="https://www.who.int/data/gho/data/indicators/indicator-details/GHO/alcohol-average-daily-intake-in-grams-among-drinkers-with-95-ci">ONU</a>
+    </footer>
+
+    <script src="app.js"></script>    
+
+</body>
+</html>
