@@ -6,16 +6,16 @@ let quants_fem = [{"quantil": 0, "valor": 0.8}, {"quantil": 1, "valor": 1.34}, {
 quants_fem.reverse()
 
 // Declarando variáveis
-let numvezes = document.querySelector( '.numvezes' )
+let entradaNumvezes = document.querySelector( '.numvezes' )
 
-let bebida = document.querySelector( '.bebida' )
+let entradaBebida = document.querySelector( '.bebida' )
 
-let quantidade = document.querySelector( '.quantidade' )
+let entradaQuantidade = document.querySelector( '.quantidade' )
 
-let genero = document.querySelector( '.genero' )
+let entradaGenero = document.querySelector( '.genero' )
 
 // Seleciona o elemento <output>
-let saida = document.querySelector( 'output' )
+let saidaPercPaises = document.querySelector( '.output_perc_paises' )
 
 // Seleciona o elemento 'preenchimento'
 let preenchimento = document.querySelector( '.preenchimento' )
@@ -23,57 +23,42 @@ let preenchimento = document.querySelector( '.preenchimento' )
 
 
 
+// Dispara a função validar cada vez que o usuário digitar
+entradaNumvezes.addEventListener( 'input', validar )
+
 // Dispara a função validar_quant cada vez que o usuário digitar
-quantidade.addEventListener('quantidade', validar_quant)
-
-// Dispara a função validar_numvezes cada vez que o usuário digitar
-numvezes.addEventListener('numvezes', validar_numvezes)
-      
+entradaQuantidade.addEventListener( 'input', validar )
 
 
-function validar_quant(){
+function validar(){
 
-    let valor = quantidade.value
+    let numvezes = entradaNumvezes.value
+    let quantidade = entradaQuantidade.value
 
     // Força a conversão para número inteiro
-    valor = parseInt( valor )
+    quantidade = parseInt( quantidade )
+    numvezes = parseInt( numvezes )
 
-    if ( valor >= 0){
-        calcular( valor )
+    if ( numvezes >= 0 && quantidade >= 0  ) {
+        calcular( numvezes, quantidade )
     }else{
         limpar()
     }
 
 }
 
-
-
-function validar_numvezes(){
-
-    let valor = numvezes.value
-
-    // Força a conversão para número inteiro
-    valor = parseInt( valor )
-
-    if ( valor >= 0){
-        calcular( valor )
-    }else{
-        limpar()
-    }
-
-}
 
 // Encontra quantil
-function calcular( numvezes, quantidade ){
+function calcular( numvezes, quantidade ) {
 
-  num_gramas = numvezes * quantidade * 10
+  let numGramas = numvezes * quantidade * 10 // 'let' para que nao vire variavel global // Camel case por convenção
 
-  num_gramas_por_dia = num_gramas/30
+  let numGramasPorDia = numGramas/30
 
   //if(genero == 'F'){
     for ( let quant of quants_fem ){
        
-        if ( num_gramas_por_dia > quant.valor){
+        if ( numGramasPorDia > quant.valor){
 
             let quantil = quant.quantil
 
@@ -85,24 +70,21 @@ function calcular( numvezes, quantidade ){
         }
     //}
   }
-
-    
-
                 
 }
 
 
 
 function mostrar( quantil ){
-    saida.textContent = quantil + '%'
-
+    saidaPercPaises.textContent = quantil + '%'
+    
     preenchimento.style.width = quantil + '%'
 }
 
 
 
 function limpar(){
-    saida.textContent = '…%'
+    saidaPercPaises.textContent = '…%'
 
     preenchimento.style.width = '0%'
 }
