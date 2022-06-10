@@ -10,12 +10,28 @@ let entradaNumvezes = document.querySelector( '.numvezes' )
 
 let entradaBebida = document.querySelector( '.bebida' )
 
+let entradaCerveja = document.querySelector( '#c' )
+
+let entradaVinho = document.querySelector( '#v' )
+
+let entradaDestilado = document.querySelector( '#d' )
+
 let entradaQuantidade = document.querySelector( '.quantidade' )
 
 let entradaGenero = document.querySelector( '.genero' )
 
 // Seleciona o elemento <output>
+let saidaNumGramas = document.querySelector( '.output_num_gramas' )
+
+let saidaNumGramasPorDia = document.querySelector( '.output_num_gramas_dia' )
+
 let saidaPercPaises = document.querySelector( '.output_perc_paises' )
+
+//let saidaPais = document.querySelector( '.output_pais' )
+
+let saidaDifBrasilNumDoses = document.querySelector( '.output_dif_brasil_num_doses' )
+
+
 
 // Seleciona o elemento 'preenchimento'
 let preenchimento = document.querySelector( '.preenchimento' )
@@ -35,12 +51,19 @@ function validar(){
     let numvezes = entradaNumvezes.value
     let quantidade = entradaQuantidade.value
 
+
+    //let bebida = entradaBebida.value
+
+    console.log(entradaCerveja.value)
+    console.log(entradaVinho.value)
+    console.log(entradaDestilado.value)
+
     // Força a conversão para número inteiro
     quantidade = parseInt( quantidade )
     numvezes = parseInt( numvezes )
 
     if ( numvezes >= 0 && quantidade >= 0  ) {
-        calcular( numvezes, quantidade )
+        calcularQuantil( numvezes, quantidade, bebida )
     }else{
         limpar()
     }
@@ -49,11 +72,37 @@ function validar(){
 
 
 // Encontra quantil
-function calcular( numvezes, quantidade ) {
+function calcularQuantil( numvezes, quantidade, bebida ) {
 
-  let numGramas = numvezes * quantidade * 10 // 'let' para que nao vire variavel global // Camel case por convenção
+  let numGramas = (numvezes * quantidade * 10).toFixed(2) // 'let' para que nao vire variavel global // Camel case por convenção
 
-  let numGramasPorDia = numGramas/30
+  let numGramasPorDia = (numGramas/30).toFixed(2)
+
+  let consBrasilFem = 19.2
+
+  
+  if ( numGramasPorDia > consBrasilFem ){
+
+    let difUsuarioBrasil = (numGramasPorDia - consBrasilFem).toFixed(2)
+
+    let difUsuarioBrasilNumDoses = (difUsuarioBrasil/10).toFixed(2)
+
+    // Mostrar 
+    mostrarDifBrasilNumDoses( difUsuarioBrasilNumDoses, 'usuario' )
+
+    }else{
+        if ( numGramasPorDia == consBrasilFem ){
+  
+            // Mostrar 
+            mostrarDifBrasilNumDoses( 0, 'empate' )
+        
+            }else{
+            // Mostrar 
+            mostrarDifBrasilNumDoses( 0, 'pais' )
+            }
+    }
+
+
 
   //if(genero == 'F'){
     for ( let quant of quants_fem ){
@@ -62,8 +111,8 @@ function calcular( numvezes, quantidade ) {
 
             let quantil = quant.quantil
 
-            // Motrar categoria atual
-            mostrar( quantil )
+            // Mostrar categoria atual
+            mostrarQuantil( quantil, numGramas, numGramasPorDia, bebida )
 
             // Paro de checar
             break
@@ -75,16 +124,58 @@ function calcular( numvezes, quantidade ) {
 
 
 
-function mostrar( quantil ){
-    saidaPercPaises.textContent = quantil + '%'
+
+
+
+function mostrarDifBrasilNumDoses( difUsuarioBrasilNumDoses, quemConsomeMais ){
+
+    if(quemConsomeMais == 'usuario'){
+        saidaDifBrasilNumDoses.textContent = 'Ou seja, diariamente são ' +  difUsuarioBrasilNumDoses + ' doses/taças/latas a mais que você.'
+    }else{
+        if(quemConsomeMais == 'empate'){
+            saidaDifBrasilNumDoses.textContent = 'Ou seja, o seu consumo é o de uma típica brasileira.'
+        }else{
+            saidaDifBrasilNumDoses.textContent = 'Ou seja, diariamente são ' +  difUsuarioBrasilNumDoses + ' doses/taças/latas a menos que você.'
+        }   
+    }
     
-    preenchimento.style.width = quantil + '%'
+
 }
 
+
+function mostrarQuantil( quantil, numGramas, numGramasPorDia, bebida ){
+    // Textual
+    saidaPercPaises.textContent = quantil + '%'
+
+    saidaNumGramas.textContent = numGramas + 'g'
+
+    saidaNumGramasPorDia.textContent = numGramasPorDia + 'g'
+
+    // Barra
+    preenchimento.style.width = quantil + '%'
+
+    
+
+    if(bebida == 'cerveja'){
+        preenchimento.style.background = 'goldenrod'
+    }else{
+        if(bebida == 'vinho'){
+            preenchimento.style.background = 'darkred'
+        }else{
+            preenchimento.style.background = 'whitesmoke'
+        }
+    }
+}
 
 
 function limpar(){
     saidaPercPaises.textContent = '…%'
+
+    saidaNumGramas.textContent = '…%'
+
+    saidaNumGramasPorDia.textContent = '…%'
+
+    //saidaPais.textContent = '…%'
 
     preenchimento.style.width = '0%'
 }

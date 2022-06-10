@@ -21,11 +21,11 @@
     <p>Nessas ocasiões, o que você costuma beber?</p>
 
     <form>
-        <input type="radio" class = 'bebida' id="c" name="bebida" value="cerveja">
+        <input type="radio" class = 'bebida' id="c" value="cerveja">
         <label for="cerveja">Cerveja 🍺</label><br>
-        <input type="radio" class = 'bebida' id="v" name="bebida" value="vinho">
+        <input type="radio" class = 'bebida' id="v" value="vinho">
         <label for="vinho">Vinho 🍷</label><br>
-        <input type="radio" class = 'bebida' id="d" name="bebida" value="destilado">
+        <input type="radio" class = 'bebida' id="d" value="destilado">
         <label for="destilado">Destilado 🍸</label>
     </form>
 
@@ -50,16 +50,32 @@
     </form>
 
 
+
+
+    <p>
+        Segundo você mesmo:
+        você consome por mês, aproximadamente <output class='output_num_gramas'>…%</output> de álcool. 
+    </p>
+    <p>
+        Ou seja, cerca de <output class='output_num_gramas_dia'>…%</output> de álcool por dia.
+    </p>
+    <p>
+        Com esse consumo, você bebe mais que mulheres de <output class='output_perc_paises'>…%</output> dos 189 países analisados.
+    </p>
+
     <div class="barra">
         <div class="preenchimento"></div>
     </div>
 
+     
+   
+
     <p>
-        Segundo o que você disse,
-        você bebe mais que mulheres de <output class='output_perc_paises'>…%</output> dos 189 países analisados.
-    </p>
-
-
+        Aqui no Brasil 🇧🇷 uma mulher costuma consumir 19,2g de álcool por dia. 
+    </p> 
+    <p> 
+        <output class='output_dif_brasil_num_doses'>…%</output>
+    </p>  
     
     <footer>
         Esses dados são da Organização Mundial da Saúde (OMS) e estão disponíveis <a href="https://www.who.int/data/gho/data/indicators/indicator-details/GHO/alcohol-average-daily-intake-in-grams-among-drinkers-with-95-ci">nesse link</a>
