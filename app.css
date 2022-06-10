@@ -2,11 +2,12 @@
   width: 600px;
   height: 24px;
   background: lightgrey;
-  border-color: lightgrey; 
+  border-color: black; 
   margin: 24px 0;
 }
 
 .preenchimento {
   width: 0;
   height: 100%;
+  border-color: black; 
 }

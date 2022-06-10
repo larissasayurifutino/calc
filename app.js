@@ -8,13 +8,7 @@ quants_fem.reverse()
 // Declarando variáveis
 let entradaNumvezes = document.querySelector( '.numvezes' )
 
-let entradaBebida = document.querySelector( '.bebida' )
-
-let entradaCerveja = document.querySelector( '#c' )
-
-let entradaVinho = document.querySelector( '#v' )
-
-let entradaDestilado = document.querySelector( '#d' )
+let entradaBebida = document.getElementsByClassName( 'bebida' )
 
 let entradaQuantidade = document.querySelector( '.quantidade' )
 
@@ -52,18 +46,12 @@ function validar(){
     let quantidade = entradaQuantidade.value
 
 
-    //let bebida = entradaBebida.value
-
-    console.log(entradaCerveja.value)
-    console.log(entradaVinho.value)
-    console.log(entradaDestilado.value)
-
     // Força a conversão para número inteiro
     quantidade = parseInt( quantidade )
     numvezes = parseInt( numvezes )
 
     if ( numvezes >= 0 && quantidade >= 0  ) {
-        calcularQuantil( numvezes, quantidade, bebida )
+        calcularQuantil( numvezes, quantidade )
     }else{
         limpar()
     }
@@ -72,7 +60,7 @@ function validar(){
 
 
 // Encontra quantil
-function calcularQuantil( numvezes, quantidade, bebida ) {
+function calcularQuantil( numvezes, quantidade ) {
 
   let numGramas = (numvezes * quantidade * 10).toFixed(2) // 'let' para que nao vire variavel global // Camel case por convenção
 
@@ -80,13 +68,11 @@ function calcularQuantil( numvezes, quantidade, bebida ) {
 
   let consBrasilFem = 19.2
 
-  
-  if ( numGramasPorDia > consBrasilFem ){
+  let difUsuarioBrasil = (numGramasPorDia - consBrasilFem).toFixed(2)
 
-    let difUsuarioBrasil = (numGramasPorDia - consBrasilFem).toFixed(2)
+  let difUsuarioBrasilNumDoses = (difUsuarioBrasil/10).toFixed(2)
 
-    let difUsuarioBrasilNumDoses = (difUsuarioBrasil/10).toFixed(2)
-
+    if ( numGramasPorDia > consBrasilFem ){
     // Mostrar 
     mostrarDifBrasilNumDoses( difUsuarioBrasilNumDoses, 'usuario' )
 
@@ -98,7 +84,7 @@ function calcularQuantil( numvezes, quantidade, bebida ) {
         
             }else{
             // Mostrar 
-            mostrarDifBrasilNumDoses( 0, 'pais' )
+            mostrarDifBrasilNumDoses( Math.abs(difUsuarioBrasilNumDoses), 'pais' )
             }
     }
 
@@ -112,7 +98,7 @@ function calcularQuantil( numvezes, quantidade, bebida ) {
             let quantil = quant.quantil
 
             // Mostrar categoria atual
-            mostrarQuantil( quantil, numGramas, numGramasPorDia, bebida )
+            mostrarQuantil( quantil, numGramas, numGramasPorDia )
 
             // Paro de checar
             break
@@ -129,6 +115,8 @@ function calcularQuantil( numvezes, quantidade, bebida ) {
 
 function mostrarDifBrasilNumDoses( difUsuarioBrasilNumDoses, quemConsomeMais ){
 
+    console.log(quemConsomeMais)
+
     if(quemConsomeMais == 'usuario'){
         saidaDifBrasilNumDoses.textContent = 'Ou seja, diariamente são ' +  difUsuarioBrasilNumDoses + ' doses/taças/latas a mais que você.'
     }else{
@@ -138,12 +126,14 @@ function mostrarDifBrasilNumDoses( difUsuarioBrasilNumDoses, quemConsomeMais ){
             saidaDifBrasilNumDoses.textContent = 'Ou seja, diariamente são ' +  difUsuarioBrasilNumDoses + ' doses/taças/latas a menos que você.'
         }   
     }
-    
 
 }
 
 
-function mostrarQuantil( quantil, numGramas, numGramasPorDia, bebida ){
+function mostrarQuantil( quantil, numGramas, numGramasPorDia ){
+
+    let bebida = document.querySelector('input[name="bebida"]:checked').value;
+
     // Textual
     saidaPercPaises.textContent = quantil + '%'
 
@@ -155,7 +145,7 @@ function mostrarQuantil( quantil, numGramas, numGramasPorDia, bebida ){
     preenchimento.style.width = quantil + '%'
 
     
-
+    // Mudar cor da barra
     if(bebida == 'cerveja'){
         preenchimento.style.background = 'goldenrod'
     }else{
