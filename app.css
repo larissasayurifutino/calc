@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Barriecito&display=swap');
+
+
+h1{
+  font-family: 'Barriecito', cursive;
+  font-size: 32px;
+  background-color: white;
+  margin: 0 auto;
+}
+
+
 .barra {
   width: 600px;
   height: 24px;
@@ -10,4 +21,11 @@
   width: 0;
   height: 100%;
   border-color: black; 
+}
+
+output{
+  background-color: lightgrey;
+  color: black;
+  font-weight: bold;
+  font-size: 18;
 }
