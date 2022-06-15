@@ -17,17 +17,13 @@ quants_masc.reverse()
 // Declarando variáveis
 let entradaNumvezes = document.querySelector( '.numvezes' )
 
-//let entradaBebida = document.querySelector('input[name="bebida"]:checked').value
-
-//let entradaGenero = document.querySelector('input[name="genero"]:checked').value
-
 let entradaQuantidade = document.querySelector( '.quantidade' )
 
 
 
 // Seleciona o elemento <output>
 
-let saidaGenero = document.querySelector( '.output_genero_escrever' )
+let saidaGenero = document.querySelectorAll( '.output_genero_escrever' )
 
 let saidaNumGramas = document.querySelector( '.output_num_gramas' )
 
@@ -43,7 +39,7 @@ let saidaConsMedioBrasil = document.querySelector( '.output_cons_medio_brasil' )
 
 
 
-// Seleciona o elemento 'preenchimento'
+// Seleciona o elemento 'preenchimento' (a barra)
 let preenchimento = document.querySelector( '.preenchimento' )
 
 
@@ -61,39 +57,73 @@ function validar(){
     let numvezes = entradaNumvezes.value
     let quantidade = entradaQuantidade.value
 
+    let entradaBebida = document.querySelector('input[name="bebida"]:checked')//.value
+    let entradaGenero = document.querySelector('input[name="genero"]:checked')//.value
 
-    
-    // Força a conversão para número inteiro
-    quantidade = parseInt( quantidade )
-    numvezes = parseInt( numvezes )
+    let bebida, genero
 
-    if ( numvezes >= 0 && quantidade >= 0  ) {
-        calcularQuantil( numvezes, quantidade )
-        acharPaisVizinho( numvezes, quantidade )
+    if( entradaBebida ) bebida = entradaBebida.value 
+
+
+    if( entradaGenero ) genero = entradaGenero.value 
+
+    if( genero && bebida ){
+
+        // Força a conversão para número inteiro
+        quantidade = parseInt( quantidade )
+        numvezes = parseInt( numvezes )
+
+        console.log(numvezes)
+        console.log(quantidade)
+        console.log(genero)
+        console.log(bebida)
+
+
+        if ( numvezes >= 0 && quantidade >= 0  ) {
+            calcularQuantil( numvezes, quantidade, genero )
+            acharPaisVizinho( numvezes, quantidade, genero )
+        }else{
+            limpar()
+        }
+
     }else{
-        limpar()
+        console.log('Defina bebida e/ou genero!')
     }
+    
+
 
 }
 
 
 // Encontra quantil
-function calcularQuantil( numvezes, quantidade ) {
-
-  let genero = document.querySelector('input[name="genero"]:checked').value
-  //console.log(genero)
+function calcularQuantil( numvezes, quantidade, genero ) {
 
   let numGramas = (numvezes * quantidade * 10).toFixed(2) // 'let' para que nao vire variavel global // Camel case por convenção
 
   let numGramasPorDia = (numGramas/30).toFixed(2)
 
+  let consBrasil
+
   // Consumo do Brasil por gênero
   if(genero == 'F'){
-    let consBrasil = 19.2
+    consBrasil = 19.2
     saidaConsMedioBrasil.textContent = consBrasil
   }else{
-    let consBrasil = 53.7
+    consBrasil = 53.7
     saidaConsMedioBrasil.textContent = consBrasil
+  }
+
+  // Escrever homem ou mulher
+  if(genero == 'F'){
+        for(saida of saidaGenero){
+            saida.textContent = 'mulheres'
+        }
+        
+  }else{
+        
+        for(saida of saidaGenero){
+            saida.textContent = 'homens'
+        }
   }
 
   
@@ -128,7 +158,7 @@ function calcularQuantil( numvezes, quantidade ) {
             let quantil = quant.quantil
 
             // Mostrar categoria atual
-            mostrarQuantil( quantil, numGramas, numGramasPorDia, bebida, genero )
+            mostrarQuantil( quantil, numGramas, numGramasPorDia )
 
             // Paro de checar
             break
@@ -142,7 +172,7 @@ function calcularQuantil( numvezes, quantidade ) {
             let quantil = quant.quantil
 
             // Mostrar categoria atual
-            mostrarQuantil( quantil, numGramas, numGramasPorDia, bebida, genero )
+            mostrarQuantil( quantil, numGramas, numGramasPorDia )
 
             // Paro de checar
             break
@@ -171,7 +201,7 @@ function mostrarDifBrasilNumDoses( difUsuarioBrasilNumDoses, quemConsomeMais ){
 }
 
 
-function mostrarQuantil( quantil, numGramas, numGramasPorDia, genero ){
+function mostrarQuantil( quantil, numGramas, numGramasPorDia ){
 
     // Textual
     saidaPercPaises.textContent = quantil + '%'
@@ -186,6 +216,8 @@ function mostrarQuantil( quantil, numGramas, numGramasPorDia, genero ){
 
     let bebida = document.querySelector('input[name="bebida"]:checked').value
 
+    console.log(bebida)
+
     
     // Mudar cor da barra
     if(bebida == 'cerveja'){
@@ -199,12 +231,7 @@ function mostrarQuantil( quantil, numGramas, numGramasPorDia, genero ){
     }
 
 
-    // Escrever homem ou mulher
-    if(genero == 'F'){
-        saidaGenero.textContent = 'mulheres'
-    }else{
-        saidaGenero.textContent = 'homens'
-    }
+
 
 }
 
@@ -225,16 +252,16 @@ function limpar(){
 
 
 
-function acharPaisVizinho( numvezes, quantidade ) {
+function acharPaisVizinho( numvezes, quantidade, genero ) {
 
     let numGramas = numvezes * quantidade * 10 // 'let' para que nao vire variavel global // Camel case por convenção
   
     let numGramasPorDia = numGramas/30
 
-
+    let difUsuarioPaisAbsoluteValue
   
     if(genero == 'F'){
-        const difUsuarioPaisAbsoluteValue = consumos_pais_fem.map(function(consumo){
+        difUsuarioPaisAbsoluteValue = consumos_pais_fem.map(function(consumo){
             let dif = consumo.valor - numGramasPorDia // diferença entre o numGramasPorDia do usuario e p consumo do pais
     
             let difAbs = Math.abs(dif) // diferença em valor absoluto
@@ -242,7 +269,7 @@ function acharPaisVizinho( numvezes, quantidade ) {
             return difAbs
         })
     }else{
-        const difUsuarioPaisAbsoluteValue = consumos_pais_masc.map(function(consumo){
+        difUsuarioPaisAbsoluteValue = consumos_pais_masc.map(function(consumo){
             let dif = consumo.valor - numGramasPorDia // diferença entre o numGramasPorDia do usuario e p consumo do pais
     
             let difAbs = Math.abs(dif) // diferença em valor absoluto
@@ -259,12 +286,12 @@ function acharPaisVizinho( numvezes, quantidade ) {
         const index = difUsuarioPaisAbsoluteValue.indexOf(minDifUsuarioPaisAbsoluteValue);
 
         
-        
+        let pais
 
         if(genero == 'F'){
-            const pais = consumos_pais_fem[index].pais 
+            pais = consumos_pais_fem[index].pais 
         }else{
-            const pais = consumos_pais_masc[index].pais       
+            pais = consumos_pais_masc[index].pais       
         }
 
         mostrarPais( pais )
