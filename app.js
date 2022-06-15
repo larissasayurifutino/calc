@@ -226,7 +226,7 @@ function mostrarQuantil( quantil, numGramas, numGramasPorDia ){
         if(bebida == 'vinho'){
             preenchimento.style.background = 'darkred'
         }else{
-            preenchimento.style.background = 'whitesmoke'
+            preenchimento.style.background = 'lightgrey'
         }
     }
 
